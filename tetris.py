@@ -1,6 +1,5 @@
 import pygame
 import random
-import mindwave, time
 
 """
 10 x 20 square grid
@@ -20,6 +19,116 @@ block_size = 30
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
 
+
+# SHAPE FORMATS
+
+S = [['.....',
+      '.....',
+      '..00.',
+      '.00..',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..00.',
+      '...0.',
+      '.....']]
+
+Z = [['.....',
+      '.....',
+      '.00..',
+      '..00.',
+      '.....'],
+     ['.....',
+      '..0..',
+      '.00..',
+      '.0...',
+      '.....']]
+
+I = [['..0..',
+      '..0..',
+      '..0..',
+      '..0..',
+      '.....'],
+     ['.....',
+      '0000.',
+      '.....',
+      '.....',
+      '.....']]
+
+O = [['.....',
+      '.....',
+      '.00..',
+      '.00..',
+      '.....']]
+
+J = [['.....',
+      '.0...',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..00.',
+      '..0..',
+      '..0..',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '...0.',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..0..',
+      '.00..',
+      '.....']]
+
+L = [['.....',
+      '...0.',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..0..',
+      '..00.',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '.0...',
+      '.....'],
+     ['.....',
+      '.00..',
+      '..0..',
+      '..0..',
+      '.....']]
+
+T = [['.....',
+      '..0..',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..00.',
+      '..0..',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '..0..',
+      '.....'],
+     ['.....',
+      '..0..',
+      '.00..',
+      '..0..',
+      '.....']]
+
+shapes = [S, Z, I, O, J, L, T]
+shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+# index 0 - 6 represent shape
+
+
 class Piece(object):
     rows = 20  # y
     columns = 10  # x
@@ -33,10 +142,10 @@ class Piece(object):
 
 
 def create_grid(locked_positions={}):
-    grid = [[(0,0,0) for x in xrange(10)] for x in xrange(20)]
+    grid = [[(0,0,0) for x in range(10)] for x in range(20)]
 
-    for i in xrange(len(grid)):
-        for j in xrange(len(grid[i])):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
             if (j,i) in locked_positions:
                 c = locked_positions[(j,i)]
                 grid[i][j] = c
@@ -60,7 +169,7 @@ def convert_shape_format(shape):
 
 
 def valid_space(shape, grid):
-    accepted_positions = [[(j, i) for j in xrange(10) if grid[i][j] == (0,0,0)] for i in xrange(20)]
+    accepted_positions = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
     accepted_positions = [j for sub in accepted_positions for j in sub]
     formatted = convert_shape_format(shape)
 
@@ -96,9 +205,9 @@ def draw_text_middle(text, size, color, surface):
 def draw_grid(surface, row, col):
     sx = top_left_x
     sy = top_left_y
-    for i in xrange(row):
+    for i in range(row):
         pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + play_width, sy + i * 30))  # horizontal lines
-        for j in xrange(col):
+        for j in range(col):
             pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + play_height))  # vertical lines
 
 
@@ -106,13 +215,13 @@ def clear_rows(grid, locked):
     # need to see if row is clear the shift every other row above down one
 
     inc = 0
-    for i in xrange(len(grid)-1,-1,-1):
+    for i in range(len(grid)-1,-1,-1):
         row = grid[i]
         if (0, 0, 0) not in row:
             inc += 1
             # add positions to remove from locked
             ind = i
-            for j in xrange(len(row)):
+            for j in range(len(row)):
                 try:
                     del locked[(j, i)]
                 except:
@@ -150,8 +259,8 @@ def draw_window(surface):
 
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
 
-    for i in xrange(len(grid)):
-        for j in xrange(len(grid[i])):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
             pygame.draw.rect(surface, grid[i][j], (top_left_x + j* 30, top_left_y + i * 30, 30, 30), 0)
 
     # draw grid and border
@@ -225,7 +334,7 @@ def main():
         shape_pos = convert_shape_format(current_piece)
 
         # add piece to the grid for drawing
-        for i in xrange(len(shape_pos)):
+        for i in range(len(shape_pos)):
             x, y = shape_pos[i]
             if y > -1:
                 grid[y][x] = current_piece.color
