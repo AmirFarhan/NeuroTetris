@@ -261,12 +261,14 @@ def max_score():
     return score
 
 
-def draw_window(surface, grid, score=0, last_score = 0):
+def draw_window(surface, grid, score=0, last_score = 0, attention = 0, meditation = 0, speed = 0.6):
     surface.fill((0, 0, 0))
+
+    speed_dict = {0.6: '1', 0.5: '2', 0.4: '3', 0.3: '4', 0.2: '5', 0.1: '6 (MAX!)'}
 
     pygame.font.init()
     font = pygame.font.SysFont('comicsans', 60)
-    label = font.render('Tetris', 1, (255, 255, 255))
+    label = font.render('NeuroTetris™', 1, (255, 255, 255))
 
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
 
@@ -279,12 +281,36 @@ def draw_window(surface, grid, score=0, last_score = 0):
 
     surface.blit(label, (sx + 20, sy + 160))
     # last score
-    label = font.render('High Score: ' + last_score, 1, (255,255,255))
+    label = font.render('High Score: ' + str(last_score), 1, (255,255,255))
 
     sx = top_left_x - 200
     sy = top_left_y + 200
 
     surface.blit(label, (sx + 20, sy + 160))
+
+    # Attention
+    label = font.render('Attention: ' + str(attention), 1, (255,255,255))
+
+    sx = top_left_x - 200
+    sy = top_left_y + 200
+
+    surface.blit(label, (sx + 20, sy))
+
+    # Meditation
+    label = font.render('Meditation: ' + str(meditation), 1, (255,255,255))
+
+    sx = top_left_x - 200
+    sy = top_left_y + 200
+
+    surface.blit(label, (sx + 20, sy + 30))
+
+    # Speed
+    label = font.render('Speed: ' + speed_dict[speed], 1, (255,255,255))
+
+    sx = top_left_x - 200
+    sy = top_left_y + 200
+
+    surface.blit(label, (sx + 20, sy + 60))
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -389,7 +415,7 @@ def main(win):  # *
             change_piece = False
             score += clear_rows(grid, locked_positions) * 10
 
-        draw_window(win, grid, score, last_score)
+        draw_window(win, grid, score, last_score, attention, meditation, fall_speed)
         draw_next_shape(next_piece, win)
         pygame.display.update()
 
@@ -417,5 +443,5 @@ def main_menu(win):  # *
 
 
 win = pygame.display.set_mode((s_width, s_height))
-pygame.display.set_caption('Tetris')
+pygame.display.set_caption('NeuroTetris™')
 main_menu(win)
