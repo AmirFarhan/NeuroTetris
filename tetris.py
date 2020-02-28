@@ -357,7 +357,7 @@ def main(win):  # *
         elif attention >= 20 and attention < 40:
             fall_speed = 0.4
         else:
-            fall_speed = 0.2
+            fall_speed = 0.5
 
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
