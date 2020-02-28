@@ -264,7 +264,7 @@ def max_score():
 def draw_window(surface, grid, score=0, last_score = 0, attention = 0, meditation = 0, speed = 0.6):
     surface.fill((0, 0, 0))
 
-    speed_dict = {0.6: '1', 0.5: '2', 0.4: '3', 0.3: '4', 0.2: '5', 0.1: '6 (MAX!)'}
+    speed_dict = {1: '1', 0.9: '2', 0.8: '3', 0.7: '4', 0.6: '5', 0.5: '6', 0.4: '7', 0.3: '8', 0.2: '9', 0.1: '10 (MAX!)'}
 
     pygame.font.init()
     font = pygame.font.SysFont('comicsans', 60)
@@ -347,17 +347,25 @@ def main(win):  # *
             meditation = 0
 
         if attention == 0:
-            fall_speed = 0.6
+            fall_speed = 1
         elif attention >= 80:
             fall_speed = 0.1
-        elif attention >= 60 and attention < 80:
+        elif attention >= 70 and attention < 80:
             fall_speed = 0.2
-        elif attention >= 40 and attention < 60:
+        elif attention >= 60 and attention < 70:
             fall_speed = 0.3
-        elif attention >= 20 and attention < 40:
+        elif attention >= 50 and attention < 60:
             fall_speed = 0.4
-        else:
+        elif attention >= 40 and attention < 50:
             fall_speed = 0.5
+        elif attention >= 30 and attention < 40:
+            fall_speed = 0.6
+        elif attention >= 20 and attention < 30:
+            fall_speed = 0.7
+        elif attention >= 10 and attention < 20:
+            fall_speed = 0.8
+        else:
+            fall_speed = 0.9
 
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
