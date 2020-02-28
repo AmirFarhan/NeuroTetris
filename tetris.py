@@ -283,17 +283,27 @@ def main():
     fall_time = 0
 
     while run:
-        file = open('neuroData.txt', 'r')
-        neuroData = file.readline().split()
-        attention = int(neuroData[0])
-        meditation = int(neuroData[1])
-        print(attention, meditation)
+        try:
+            file = open('neuroData.txt', 'r')
+            neuroData = file.readline().split()
+            attention = int(neuroData[0])
+            meditation = int(neuroData[1])
+        except:
+            attention = 0
+            meditation = 0
+
         if attention == 0:
             fall_speed = 0.6
-        elif attention >= 50:
+        elif attention >= 80:
             fall_speed = 0.1
+        elif attention >= 60 and attention < 80:
+            fall_speed = 0.2
+        elif attention >= 40 and attention < 60:
+            fall_speed = 0.3
+        elif attention >= 20 and attention < 40:
+            fall_speed = 0.4
         else:
-            fall_speed = 0.6
+            fall_speed = 0.2
 
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
